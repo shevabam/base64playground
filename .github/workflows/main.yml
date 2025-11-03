@@ -1,0 +1,58 @@
+name: Deploy via FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to FTP server
+        uses: SamKirkland/FTP-Deploy-Action@v4.6.2
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          # Deploy everything in this repository (the app is the repo root)
+          local-dir: ./
+          # Where to upload on the server
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          # Keep remote files that aren't present locally to reduce risk
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/.DS_Store
+            **/Thumbs.db
+            **/*.log
+            **/*.md
+            **/*.mdx
+            **/package*.json
+            **/esbuild.config.js
+            **/postcss.config.js
+            **/assets/app.js
+            **/assets/utils.js
+            **/assets/style.css
+
