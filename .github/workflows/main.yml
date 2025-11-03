@@ -37,13 +37,10 @@ jobs:
           local-dir: ./
           exclude: |
             **/.git*
+            **/.git*/**
             **/.github/**
             **/node_modules/**
-            **/.DS_Store
-            **/Thumbs.db
             **/*.log
-            **/*.md
-            **/*.mdx
             **/package*.json
             **/esbuild.config.js
             **/postcss.config.js
