@@ -28,7 +28,7 @@ jobs:
           NODE_ENV: production
 
       - name: Deploy to FTP server
-        uses: SamKirkland/FTP-Deploy-Action@v4.6.2
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
