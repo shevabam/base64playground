@@ -33,13 +33,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          # Deploy everything in this repository (the app is the repo root)
           local-dir: ./
-          # Where to upload on the server
-          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
-          # Keep remote files that aren't present locally to reduce risk
-          dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.github/**
