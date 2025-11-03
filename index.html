@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A sleek, interactive web application for encoding and decoding Base64 strings. Convert between text and Base64 instantly!">
+    <meta name="keywords" content="base64, encode, decode, converter, text converter, online tool, web utility, base64 encode, base64 decode">
+    <title>Base64 Playground</title>
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="96x96" />
+    <meta name="theme-color" content="#0a0a1a">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@shevabam">
+    <meta name="twitter:creator" content="@shevabam">
+    <meta name="twitter:title" content="Base64 Playground">
+    <meta name="twitter:description" content="A sleek, interactive web application for encoding and decoding Base64 strings. Convert between text and Base64 instantly!">
+    <meta name="twitter:image" content="https://base64playground.xyz/screenshot.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Press+Start+2P&family=VT323&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Press+Start+2P&family=VT323&display=swap"></noscript>
+    
+    <link rel="stylesheet" href="assets/style.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">Base64 Playground</h1>
+            <p class="subtitle">Encode & Decode with style!</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <div class="section-title">Enter your text:</div>
+                <textarea
+                    id="inputText"
+                    class="input-area"
+                    placeholder="Type or paste your text here..."
+                    rows="6"
+                ></textarea>
+            </section>
+
+            <section class="controls">
+                <div class="mode-switch">
+                    <div class="switch-container">
+                        <input type="checkbox" id="modeToggle" class="switch-checkbox">
+                        <label for="modeToggle" class="switch-label">
+                            <span class="switch-button"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="goButton" class="go-button">
+                    <span id="buttonText">Encode!</span>
+                </button>
+            </section>
+
+            <section class="result-section">
+                <div class="result-header">
+                    <div class="section-title">Result:</div>
+                    <div class="result-buttons">
+                        <button id="copyButton" class="action-button" title="Copy">
+                            Copy
+                        </button>
+                        <button id="clearButton" class="action-button danger" title="Clear">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+                <div id="resultText" class="result-area">
+                    The result will appear here...
+                </div>
+            </section>
+
+            <section class="history-section">
+                <div class="history-header">
+                    <div class="section-title">History</div>
+                    <button id="clearHistoryButton" class="action-button danger small">
+                        Clear All
+                    </button>
+                </div>
+                <div id="historyList" class="history-list">
+                    <p class="empty-history">No history yet...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <ul class="footer-links">
+                <li class="footer-item">
+                    <a href="https://github.com/shevabam/base64-playground" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+                </li>
+                <li class="footer-item">
+                    <a href="https://x.com/shevabam" target="_blank" rel="noopener noreferrer" class="footer-link">X/Twitter</a>
+                </li>
+                <li class="footer-item">
+                    <a href="https://bsky.app/profile/shevabam.bsky.social" target="_blank" rel="noopener noreferrer" class="footer-link">Bluesky</a>
+                </li>
+                <li class="footer-item">
+                    <a href="https://shevabam.fr" target="_blank" rel="noopener noreferrer" class="footer-link">shevabam.fr</a>
+                </li>
+            </ul>
+        </footer>
+    </div>
+
+    <script type="module" src="assets/app.min.js" defer></script>
+</body>
+</html>

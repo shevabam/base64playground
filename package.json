@@ -1,0 +1,26 @@
+{
+  "name": "base64-playground",
+  "version": "1.0.0",
+  "description": "A sleek, interactive web application for encoding and decoding Base64 strings with a cyberpunk-inspired interface.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify:js": "esbuild assets/app.js --bundle --minify --outfile=assets/app.min.js",
+    "minify:css": "postcss assets/style.css --use cssnano --no-map -o assets/style.min.css",
+    "build": "npm run minify:js && npm run minify:css",
+    "watch": "onchange --exclude=\"assets/*.min.*\" \"**/*.js\" \"**/*.css\" -- npm run build"
+  },
+  "keywords": [
+    "base64",
+    "encoding",
+    "decoding"
+  ],
+  "author": "shevabam",
+  "license": "MIT",
+  "devDependencies": {
+    "cssnano": "^7.1.2",
+    "esbuild": "^0.25.12",
+    "onchange": "^7.1.0",
+    "postcss-cli": "^11.0.1"
+  }
+}
