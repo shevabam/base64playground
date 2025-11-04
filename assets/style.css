@@ -308,7 +308,7 @@ main {
 .input-section,
 .result-section {
     flex: 1;
-    min-width: 300px;
+    min-width: 230px;
     margin-bottom: 0;
 }
 
@@ -441,7 +441,7 @@ section {
     position: relative;
     overflow: hidden;
     flex: 1;
-    min-width: 300px;
+    min-width: 230px;
 }
 
 /* Effet de coin */
