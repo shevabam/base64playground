@@ -32,47 +32,49 @@
         </header>
 
         <main>
-            <section class="input-section">
-                <div class="section-title">Enter your text:</div>
-                <textarea
-                    id="inputText"
-                    class="input-area"
-                    placeholder="Type or paste your text here..."
-                    rows="6"
-                ></textarea>
-            </section>
+            <div class="sections-row">
+                <section class="input-section">
+                    <div class="section-title">Enter your text:</div>
+                    <textarea
+                        id="inputText"
+                        class="input-area"
+                        placeholder="Type or paste your text here..."
+                        rows="6"
+                    ></textarea>
+                </section>
 
-            <section class="controls">
-                <div class="mode-switch">
-                    <div class="switch-container">
-                        <input type="checkbox" id="modeToggle" class="switch-checkbox">
-                        <label for="modeToggle" class="switch-label">
-                            <span class="switch-button"></span>
-                        </label>
+                <section class="controls">
+                    <div class="mode-switch">
+                        <div class="switch-container">
+                            <input type="checkbox" id="modeToggle" class="switch-checkbox">
+                            <label for="modeToggle" class="switch-label">
+                                <span class="switch-button"></span>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <button id="goButton" class="go-button">
-                    <span id="buttonText">Encode!</span>
-                </button>
-            </section>
+                    <button id="goButton" class="go-button">
+                        <span id="buttonText">Encode!</span>
+                    </button>
+                </section>
 
-            <section class="result-section">
-                <div class="result-header">
-                    <div class="section-title">Result:</div>
-                    <div class="result-buttons">
-                        <button id="copyButton" class="action-button" title="Copy">
-                            Copy
-                        </button>
-                        <button id="clearButton" class="action-button danger" title="Clear">
-                            Clear
-                        </button>
+                <section class="result-section">
+                    <div class="result-header">
+                        <div class="section-title">Result:</div>
+                        <div class="result-buttons">
+                            <button id="copyButton" class="action-button" title="Copy">
+                                Copy
+                            </button>
+                            <button id="clearButton" class="action-button danger" title="Clear">
+                                Clear
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div id="resultText" class="result-area">
-                    The result will appear here...
-                </div>
-            </section>
+                    <div id="resultText" class="result-area">
+                        The result will appear here...
+                    </div>
+                </section>
+            </div>
 
             <section class="history-section">
                 <div class="history-header">

@@ -14,6 +14,52 @@
     --cyber-grid: rgba(15, 240, 252, 0.1);
 }
 
+/* Assure la même boîte visuelle pour les deux éléments */
+.controls .switch-label,
+.controls .go-button {
+    height: 44px;
+    line-height: 44px;
+    box-sizing: border-box;
+}
+
+/* Évite tout décalage vertical au survol du switch */
+.controls .switch-label:hover {
+    transform: none;
+}
+
+/* Empêche le bloc toggle de s'étirer et garde ses dimensions naturelles */
+.controls .mode-switch {
+    flex: 0 0 auto;
+    align-self: center;
+}
+
+/* Garantit le style carré et néon du bouton à droite du panneau */
+.controls .go-button {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px; /* même hauteur que le switch */
+    padding: 0 50px; /* padding horizontal uniquement */
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    min-width: 200px;
+    border-radius: 0;
+    box-shadow: 0 0 16px var(--glow-blue);
+    margin-top: 0;
+    align-self: center;
+}
+
+.controls .go-button:hover {
+    background: rgba(15, 240, 252, 0.08);
+    box-shadow: 0 0 22px var(--glow-blue);
+    transform: translateY(-1px);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -60,7 +106,8 @@ body::after {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1400px;
+    width: 95%;
     margin: 0 auto;
     animation: fadeIn 0.6s ease-in;
     position: relative;
@@ -87,7 +134,20 @@ body::after {
 /* Header */
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header .title {
+    margin-bottom: 5px;
+}
+
+header .subtitle {
+    margin: 0;
+    display: inline-block;
+    width: auto;
 }
 
 .title {
@@ -146,13 +206,6 @@ header {
     }
 }
 
-.mascot {
-    display: inline-block;
-    font-size: 2.5rem;
-    animation: bounce 1s ease infinite;
-    transition: transform 0.3s ease;
-}
-
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -164,14 +217,14 @@ header {
     text-shadow: 0 0 10px var(--glow-pink);
     font-family: 'VT323', monospace;
     letter-spacing: 2px;
-    margin-top: -0.5rem;
-    position: relative;
-    display: inline-block;
-    padding: 0.5rem 1rem;
+    margin: 0.5rem 0 0 0;
+    padding: 0.5rem 1.5rem;
     background: rgba(255, 68, 204, 0.1);
     border-left: 2px solid var(--neon-pink);
     border-right: 2px solid var(--neon-pink);
     animation: subtitleGlow 2s ease-in-out infinite alternate;
+    display: inline-block;
+    line-height: 1;
 }
 
 @keyframes subtitleGlow {
@@ -181,6 +234,198 @@ header {
     to {
         box-shadow: 0 0 15px var(--glow-pink);
     }
+}
+
+/* Main content layout */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    flex-direction: column;
+}
+
+/* Container for input and result sections */
+.sections-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Styles pour la disposition normale (au-dessus de 1000px) */
+.controls {
+    margin: 20px 0;
+}
+
+/* Desktop: deux colonnes + controls en dessous en pleine largeur */
+@media (min-width: 1000px) {
+    .sections-row {
+        flex-direction: row;
+    }
+    .input-section,
+    .result-section {
+        flex: 1 1 0;
+    }
+    .controls {
+        order: 3;
+        flex-basis: 100%;
+        width: 100%;
+        margin: 20px 0;
+        padding: 0;
+    }
+}
+
+/* Empilement des sections en dessous de 1000px */
+@media (max-width: 1000px) {
+    .sections-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .input-section,
+    .result-section {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    .controls {
+        order: initial; /* suit l'ordre DOM: entre input et result */
+        margin: 15px 0;
+        padding: 0;
+    }
+    
+    .result-section {
+        order: 2;
+    }
+    
+    .history-section {
+        order: 3;
+    }
+}
+
+/* Input and Result sections */
+.input-section,
+.result-section {
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 0;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    padding: 0;
+    background: var(--bg-color);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+    margin: 0 0 20px 0;
+    position: relative;
+}
+
+/* Suppression du fond pour le pseudo-élément before de .controls */
+.controls::before {
+    display: none;
+}
+
+/* Styles pour le bouton en mode decode */
+.controls:has(.switch-checkbox:checked) .go-button {
+  color: var(--neon-purple);
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 16px var(--glow-purple);
+}
+
+.controls:has(.switch-checkbox:checked) .go-button:hover {
+  background: rgba(188, 19, 254, 0.08);
+  box-shadow: 0 0 22px var(--glow-purple);
+}
+
+/* Responsive: pile le toggle et le bouton en colonne sur petits écrans */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+}
+
+.mode-switch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+}
+
+.switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 0;
+    position: relative;
+    padding: 0;
+}
+
+.mode-text {
+    color: var(--neon-blue);
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px var(--glow-blue);
+    min-width: 80px;
+    text-align: center;
+}
+
+.go-button {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    padding: 12px 50px;
+    font-size: 1.1rem;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 0 10px var(--glow-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    min-width: 200px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.go-button:hover {
+    background: rgba(15, 240, 252, 0.1);
+    box-shadow: 0 0 20px var(--glow-blue);
+    transform: translateY(-2px);
+}
+
+.go-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 15px var(--glow-blue);
+}
+
+/* Style spécifique pour le mode Decode */
+[data-mode='decode'] .go-button {
+    color: var(--neon-pink);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 10px var(--glow-pink);
+}
+
+[data-mode='decode'] .go-button:hover {
+    background: rgba(255, 68, 204, 0.1);
+    box-shadow: 0 0 20px var(--glow-pink);
 }
 
 /* Sections */
@@ -195,10 +440,12 @@ section {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    flex: 1;
+    min-width: 300px;
 }
 
 /* Effet de coin */
-section::before {
+section:not(.controls)::before {
     content: '';
     position: absolute;
     top: 0;
@@ -212,11 +459,17 @@ section::before {
     animation: scanline 3s linear infinite;
 }
 
-section:hover {
+section:not(.controls):hover {
     box-shadow: 0 0 25px var(--glow-blue), 
                 inset 0 0 15px rgba(15, 240, 252, 0.3);
     /* transform: translateY(-3px); */
     border-color: var(--neon-purple);
+}
+
+/* Désactivation du hover pour .controls */
+.controls:hover {
+    box-shadow: none;
+    border-color: transparent;
 }
 
 /* Ancienne classe .label conservée pour la rétrocompatibilité */
@@ -275,23 +528,31 @@ section:hover {
     font-style: italic;
 }
 
-/* Controls */
-.controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+/* Controls - old styles removed, new styles are above */
 
 .mode-switch {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin: 20px 0;
+    margin: 20px 0 0 0;
     position: relative;
     z-index: 10;
+    text-align: center;
+}
+
+.mode-switch .switch-label {
+    margin: 0 auto;
+}
+
+.mode-text {
+    color: var(--neon-blue);
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px var(--glow-blue);
 }
 
 /* Mode label is now integrated into the switch */
@@ -300,7 +561,9 @@ section:hover {
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 15px;
+    margin-bottom: 20px;
 }
 
 .switch-checkbox {
@@ -308,9 +571,11 @@ section:hover {
 }
 
 .switch-label {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 120px; /* Largeur augmentée */
     height: 44px;
+    line-height: 44px; /* centre optiquement le texte/pseudos */
     background: rgba(10, 10, 30, 0.9);
     border: 2px solid var(--neon-blue);
     border-radius: 30px;
@@ -441,27 +706,20 @@ section:hover {
     --button-glow: var(--glow-blue);
     --button-hover-bg: rgba(15, 240, 252, 0.1);
     --button-active-bg: rgba(15, 240, 252, 0.2);
-    --button-scan: rgba(15, 240, 252, 0.2);
-    
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: 16px 50px;
-    background: rgba(10, 10, 30, 0.9);
-    color: var(--button-color);
-    border: 2px solid var(--button-color);
-    border-radius: 6px;
+    border-radius: 50px;
     cursor: pointer;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 0 0 8px var(--button-glow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
-    box-shadow: 
-        0 0 10px var(--button-glow),
-        inset 0 0 10px var(--button-scan);
+    box-shadow: 0 0 15px var(--glow-blue);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 20px;
 }
 
 /* Mode Decode - Couleur violette */
@@ -1148,7 +1406,7 @@ section:hover {
 .footer-link {
     color: var(--neon-blue);
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.2rem;
     transition: color 0.3s ease, text-shadow 0.3s ease;
     padding: 4px 0;
     display: inline-block;
