@@ -70,7 +70,6 @@ body::after {
     box-shadow: 0 0 20px var(--glow-blue), 0 0 40px rgba(15, 240, 252, 0.2);
     border-radius: 8px;
     padding: 2rem;
-    margin-top: 2rem;
     backdrop-filter: blur(5px);
 }
 
@@ -1199,11 +1198,11 @@ section:hover {
 /* Responsive */
 @media (max-width: 768px) {
     .title {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
     }
 
     .subtitle {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .controls {
@@ -1214,15 +1213,13 @@ section:hover {
         font-size: 1.1rem;
         padding: 12px 30px;
     }
-
-    .result-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
     
     .result-header .label {
         margin-bottom: 5px;
+    }
+
+    .section-title {
+        font-size: .875rem;
     }
 }
 
@@ -1230,13 +1227,12 @@ section:hover {
     body {
         padding: 10px;
     }
+    .title {
+        font-size: 1rem;
+    }
 
     section {
         padding: 15px;
-    }
-
-    .title {
-        font-size: 1rem;
     }
 
     .go-button {
