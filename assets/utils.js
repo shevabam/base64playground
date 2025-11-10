@@ -63,14 +63,6 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, m => map[m]);
 }
 
-/**
- * Generate a unique ID
- * @returns {string} A unique ID
- */
-function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
-
 // Konami Code
 const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
 let konamiIndex = 0;
@@ -167,4 +159,4 @@ function initKonami() {
     });
 }
 
-export { formatDate, truncateText, escapeHtml, generateId, initKonami };
+export { formatDate, truncateText, escapeHtml, initKonami };

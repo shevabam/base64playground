@@ -1,7 +1,8 @@
 import { formatDate, truncateText, escapeHtml, initKonami } from './utils.js';
+import config from './config.js';
 
-const STORAGE_KEY = 'base64_playground';
-const MAX_HISTORY = 10;
+const STORAGE_KEY = config.storage.key;
+const MAX_HISTORY = config.storage.maxHistoryItems;
 
 const inputText = document.getElementById('inputText');
 const resultText = document.getElementById('resultText');
@@ -31,7 +32,7 @@ modeToggle.addEventListener('change', () => {
     button.classList.add('button-pulse');
     setTimeout(() => {
         button.classList.remove('button-pulse');
-    }, 500);
+    }, config.animations.buttonPulse);
 });
 
 // Update UI based on mode
@@ -69,11 +70,16 @@ goButton.addEventListener('click', () => {
         let result;
 
         if (currentMode === 'encode') {
-            // Encode to Base64
-            result = btoa(unescape(encodeURIComponent(input)));
+            // Encode to Base64 using modern TextEncoder API
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            result = btoa(String.fromCharCode(...data));
         } else {
-            // Decode from Base64
-            result = decodeURIComponent(escape(atob(input)));
+            // Decode from Base64 using modern TextDecoder API
+            const binaryString = atob(input);
+            const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+            const decoder = new TextDecoder();
+            result = decoder.decode(bytes);
         }
 
         // Display result
@@ -86,7 +92,7 @@ goButton.addEventListener('click', () => {
         resultText.classList.add('success');
         setTimeout(() => {
             resultText.classList.remove('success');
-        }, 500);
+        }, config.animations.duration);
 
     } catch (error) {
         if (currentMode === 'decode') {
@@ -105,10 +111,10 @@ function displayResult(result) {
 // Show Error
 function showError(message) {
     resultText.textContent = message;
-    resultText.classList.add('success');
+    resultText.classList.add('error');
     setTimeout(() => {
-        resultText.classList.remove('success');
-    }, 500);
+        resultText.classList.remove('error');
+    }, config.animations.duration);
 }
 
 // Copy Button Handler
@@ -130,9 +136,10 @@ copyButton.addEventListener('click', () => {
         setTimeout(() => {
             copyButton.textContent = originalText;
             copyButton.style.background = '';
-        }, 1500);
+        }, config.animations.copyFeedback);
     }).catch(err => {
-        showError('Copy error! 😞');
+        console.error('Clipboard API error:', err);
+        showError('Copy error! Please try again.');
     });
 });
 
@@ -144,37 +151,63 @@ clearButton.addEventListener('click', () => {
 });
 
 // History Management
+function isLocalStorageAvailable() {
+    try {
+        const test = '__localStorage_test__';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch (error) {
+        console.warn('LocalStorage is not available:', error);
+        return false;
+    }
+}
+
 function saveToHistory(mode, input, output) {
-    let history = getHistory();
-
-    // Create new entry
-    const entry = {
-        mode: mode,
-        input: input,
-        output: output,
-        date: new Date().toISOString()
-    };
-
-    // Add to beginning of array
-    history.unshift(entry);
-
-    // Keep only last 10 entries
-    if (history.length > MAX_HISTORY) {
-        history = history.slice(0, MAX_HISTORY);
+    if (!isLocalStorageAvailable()) {
+        console.warn('Cannot save history: LocalStorage not available');
+        return;
     }
 
-    // Save to localStorage
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    try {
+        let history = getHistory();
 
-    // Update display
-    loadHistory();
+        // Create new entry
+        const entry = {
+            mode: mode,
+            input: input,
+            output: output,
+            date: new Date().toISOString()
+        };
+
+        // Add to beginning of array
+        history.unshift(entry);
+
+        // Keep only last 10 entries
+        if (history.length > MAX_HISTORY) {
+            history = history.slice(0, MAX_HISTORY);
+        }
+
+        // Save to localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+        // Update display
+        loadHistory();
+    } catch (error) {
+        console.error('Failed to save history:', error);
+    }
 }
 
 function getHistory() {
+    if (!isLocalStorageAvailable()) {
+        return [];
+    }
+
     try {
         const stored = localStorage.getItem(STORAGE_KEY);
         return stored ? JSON.parse(stored) : [];
     } catch (error) {
+        console.error('Failed to get history:', error);
         return [];
     }
 }
@@ -201,10 +234,10 @@ function loadHistory() {
                 </div>
                 <div class="history-content">
                     <div class="history-text">
-                        <strong>Input:</strong> ${truncateText(entry.input, 80)}
+                        <strong>Input:</strong> ${truncateText(entry.input, config.truncation.historyLength)}
                     </div>
                     <div class="history-output">
-                        <strong>Output:</strong> ${truncateText(entry.output, 80)}
+                        <strong>Output:</strong> ${truncateText(entry.output, config.truncation.historyLength)}
                         <button class="copy-output" title="Copy output">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -232,7 +265,6 @@ function loadHistory() {
                 inputText.value = historyItem.input;
                 currentMode = historyItem.mode;
                 updateUI();
-                processInput();
             }
         });
 
@@ -252,14 +284,25 @@ function loadHistory() {
                         copyButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                         copyButton.style.color = 'var(--matrix-green)';
                         copyButton.style.borderColor = 'var(--matrix-green)';
-                        
+
                         setTimeout(() => {
                             copyButton.innerHTML = originalText;
                             copyButton.style.color = 'var(--neon-blue)';
                             copyButton.style.borderColor = 'var(--neon-blue)';
-                        }, 2000);
+                        }, config.animations.historyFeedback);
                     } catch (err) {
-                        console.error('Failed to copy text: ', err);
+                        console.error('Clipboard API error (history):', err);
+                        // Visual error feedback
+                        const originalText = copyButton.innerHTML;
+                        copyButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                        copyButton.style.color = 'var(--neon-pink)';
+                        copyButton.style.borderColor = 'var(--neon-pink)';
+
+                        setTimeout(() => {
+                            copyButton.innerHTML = originalText;
+                            copyButton.style.color = 'var(--neon-blue)';
+                            copyButton.style.borderColor = 'var(--neon-blue)';
+                        }, config.animations.historyFeedback);
                     }
                 }
             });
@@ -290,8 +333,19 @@ function loadHistoryEntry(index) {
 // Clear History Button Handler
 clearHistoryButton.addEventListener('click', () => {
     if (confirm('Clear all history? 🗑')) {
-        localStorage.removeItem(STORAGE_KEY);
-        loadHistory();
+        if (!isLocalStorageAvailable()) {
+            console.warn('Cannot clear history: LocalStorage not available');
+            showError('Cannot clear history!');
+            return;
+        }
+
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+            loadHistory();
+        } catch (error) {
+            console.error('Failed to clear history:', error);
+            showError('Failed to clear history!');
+        }
     }
 });
 
