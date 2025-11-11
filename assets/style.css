@@ -3,7 +3,6 @@
     --neon-blue: #0ff0fc;
     --neon-pink: #ff44cc;
     --matrix-green: #0f0;
-    --cyber-yellow: #f4f734;
     --dark-bg: #0a0a1a;
     --darker-bg: #050510;
     --light-text: #ffffff;
@@ -12,52 +11,6 @@
     --glow-pink: rgba(255, 68, 204, 0.4);
     --glow-green: rgba(0, 255, 0, 0.3);
     --cyber-grid: rgba(15, 240, 252, 0.1);
-}
-
-/* Assure la même boîte visuelle pour les deux éléments */
-.controls .switch-label,
-.controls .go-button {
-    height: 44px;
-    line-height: 44px;
-    box-sizing: border-box;
-}
-
-/* Évite tout décalage vertical au survol du switch */
-.controls .switch-label:hover {
-    transform: none;
-}
-
-/* Empêche le bloc toggle de s'étirer et garde ses dimensions naturelles */
-.controls .mode-switch {
-    flex: 0 0 auto;
-    align-self: center;
-}
-
-/* Garantit le style carré et néon du bouton à droite du panneau */
-.controls .go-button {
-    background: transparent;
-    color: var(--neon-blue);
-    border: 2px solid var(--neon-blue);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px; /* même hauteur que le switch */
-    padding: 0 50px; /* padding horizontal uniquement */
-    font-family: 'Orbitron', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    min-width: 200px;
-    border-radius: 0;
-    box-shadow: 0 0 16px var(--glow-blue);
-    margin-top: 0;
-    align-self: center;
-}
-
-.controls .go-button:hover {
-    background: rgba(15, 240, 252, 0.08);
-    box-shadow: 0 0 22px var(--glow-blue);
-    transform: translateY(-1px);
 }
 
 * {
@@ -206,7 +159,7 @@ header .subtitle {
     }
 }
 
-@keyframes bounce {
+@keyframes bounceTitle {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
@@ -255,7 +208,45 @@ main {
 /* Styles pour la disposition normale (au-dessus de 1000px) */
 .controls {
     margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    padding: 0;
+    background: var(--bg-color);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+    margin: 0 0 20px 0;
+    position: relative;
 }
+
+/* Suppression du fond pour le pseudo-élément before de .controls */
+.controls::before {
+    display: none;
+}
+
+/* Assure la même hauteur visuelle pour le switch label */
+.controls .switch-label {
+    height: 44px;
+    line-height: 44px;
+    box-sizing: border-box;
+}
+
+/* Évite tout décalage vertical au survol du switch */
+.controls .switch-label:hover {
+    transform: none;
+}
+
+/* Empêche le bloc toggle de s'étirer et garde ses dimensions naturelles */
+.controls .mode-switch {
+    flex: 0 0 auto;
+    align-self: center;
+}
+
 
 /* Desktop: deux colonnes + controls en dessous en pleine largeur */
 @media (min-width: 1000px) {
@@ -312,121 +303,6 @@ main {
     margin-bottom: 0;
 }
 
-/* Controls */
-.controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    width: 100%;
-    padding: 0;
-    background: var(--bg-color);
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-    max-width: 100%;
-    margin: 0 0 20px 0;
-    position: relative;
-}
-
-/* Suppression du fond pour le pseudo-élément before de .controls */
-.controls::before {
-    display: none;
-}
-
-/* Styles pour le bouton en mode decode */
-.controls:has(.switch-checkbox:checked) .go-button {
-  color: var(--neon-purple);
-  border-color: var(--neon-purple);
-  box-shadow: 0 0 16px var(--glow-purple);
-}
-
-.controls:has(.switch-checkbox:checked) .go-button:hover {
-  background: rgba(188, 19, 254, 0.08);
-  box-shadow: 0 0 22px var(--glow-purple);
-}
-
-/* Responsive: pile le toggle et le bouton en colonne sur petits écrans */
-@media (max-width: 768px) {
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 24px;
-  }
-}
-
-.mode-switch {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0;
-}
-
-.switch-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 0;
-    position: relative;
-    padding: 0;
-}
-
-.mode-text {
-    color: var(--neon-blue);
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px var(--glow-blue);
-    min-width: 80px;
-    text-align: center;
-}
-
-.go-button {
-    background: transparent;
-    color: var(--neon-blue);
-    border: 2px solid var(--neon-blue);
-    padding: 12px 50px;
-    font-size: 1.1rem;
-    font-family: 'Orbitron', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    box-shadow: 0 0 10px var(--glow-blue);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
-    min-width: 200px;
-    text-align: center;
-    margin-top: 10px;
-}
-
-.go-button:hover {
-    background: rgba(15, 240, 252, 0.1);
-    box-shadow: 0 0 20px var(--glow-blue);
-    transform: translateY(-2px);
-}
-
-.go-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 0 15px var(--glow-blue);
-}
-
-/* Style spécifique pour le mode Decode */
-[data-mode='decode'] .go-button {
-    color: var(--neon-pink);
-    border-color: var(--neon-pink);
-    box-shadow: 0 0 10px var(--glow-pink);
-}
-
-[data-mode='decode'] .go-button:hover {
-    background: rgba(255, 68, 204, 0.1);
-    box-shadow: 0 0 20px var(--glow-pink);
-}
 
 /* Sections */
 section {
@@ -528,17 +404,15 @@ section:not(.controls):hover {
     font-style: italic;
 }
 
-/* Controls - old styles removed, new styles are above */
+/* Controls - Mode Switch and Button consolidated below */
 
 .mode-switch {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 15px;
-    margin: 20px 0 0 0;
-    position: relative;
-    z-index: 10;
-    text-align: center;
+    gap: 0;
+    flex: 0 0 auto;
+    align-self: center;
 }
 
 .mode-switch .switch-label {
@@ -551,19 +425,19 @@ section:not(.controls):hover {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 5px;
     text-shadow: 0 0 10px var(--glow-blue);
+    min-width: 80px;
+    text-align: center;
 }
 
-/* Mode label is now integrated into the switch */
-
 .switch-container {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    position: relative;
+    padding: 0;
 }
 
 .switch-checkbox {
@@ -671,21 +545,11 @@ section:not(.controls):hover {
     opacity: 1;
 }
 
-/* Animation du bouton au survol */
+/* Switch button animations */
 @keyframes pulse {
     0% { box-shadow: 0 0 5px var(--glow-blue), 0 0 20px var(--glow-blue); }
     50% { box-shadow: 0 0 10px var(--glow-blue), 0 0 30px var(--glow-blue); }
     100% { box-shadow: 0 0 5px var(--glow-blue), 0 0 20px var(--glow-blue); }
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.1); }
-}
-
-@keyframes rainbow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
 }
 
 .switch-checkbox:checked + .switch-label .switch-button {
@@ -700,76 +564,42 @@ section:not(.controls):hover {
     box-shadow: 0 0 20px var(--glow-purple);
 }
 
-/* Go Button */
+/* Go Button - Consolidated styles */
 .go-button {
-    --button-color: var(--neon-blue);
-    --button-glow: var(--glow-blue);
-    --button-hover-bg: rgba(15, 240, 252, 0.1);
-    --button-active-bg: rgba(15, 240, 252, 0.2);
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 50px;
     font-family: 'Orbitron', sans-serif;
-    border-radius: 50px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    min-width: 200px;
+    border-radius: 0;
+    box-shadow: 0 0 16px var(--glow-blue);
+    margin-top: 0;
+    align-self: center;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     z-index: 1;
-    box-shadow: 0 0 15px var(--glow-blue);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: bold;
-    width: 100%;
-    max-width: 200px;
-    margin-top: 20px;
 }
 
-/* Mode Decode - Couleur violette */
-.go-button[data-mode='decode'] {
-    --button-color: var(--neon-purple);
-    --button-glow: var(--glow-purple);
-    --button-hover-bg: rgba(188, 19, 254, 0.1);
-    --button-active-bg: rgba(188, 19, 254, 0.2);
-    --button-scan: rgba(188, 19, 254, 0.2);
-}
-
-/* Effet de lueur au survol */
 .go-button:hover {
-    transform: translateY(-2px);
-    background: var(--button-hover-bg);
-    box-shadow: 
-        0 0 20px var(--button-glow),
-        inset 0 0 20px var(--button-scan);
-    text-shadow: 0 0 15px var(--button-glow);
+    background: rgba(15, 240, 252, 0.08);
+    box-shadow: 0 0 22px var(--glow-blue);
+    transform: translateY(-1px);
 }
 
-/* Effet de clic */
 .go-button:active {
     transform: translateY(1px);
-    background: var(--button-active-bg);
-    box-shadow: 
-        0 0 5px var(--button-glow),
-        inset 0 0 10px var(--button-scan);
-}
-
-/* Animation de balayage au survol */
-.go-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        var(--button-scan),
-        transparent
-    );
-    transition: 0.6s;
-    z-index: -1;
-}
-
-.go-button:hover::before {
-    left: 100%;
+    box-shadow: 0 0 15px var(--glow-blue);
 }
 
 /* Animation de balayage au survol */
@@ -794,17 +624,39 @@ section:not(.controls):hover {
     left: 100%;
 }
 
-.go-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 0 10px var(--glow-purple), 
-                0 0 20px var(--glow-blue);
+/* Styles pour le bouton en mode decode */
+.controls:has(.switch-checkbox:checked) .go-button {
+    color: var(--neon-purple);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 16px var(--glow-purple);
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px) rotate(-2deg); }
-    75% { transform: translateX(5px) rotate(2deg); }
+.controls:has(.switch-checkbox:checked) .go-button:hover {
+    background: rgba(188, 19, 254, 0.08);
+    box-shadow: 0 0 22px var(--glow-purple);
 }
+
+/* Style spécifique pour le mode Decode (legacy) */
+[data-mode='decode'] .go-button {
+    color: var(--neon-pink);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 10px var(--glow-pink);
+}
+
+[data-mode='decode'] .go-button:hover {
+    background: rgba(255, 68, 204, 0.1);
+    box-shadow: 0 0 20px var(--glow-pink);
+}
+
+/* Responsive: pile le toggle et le bouton en colonne sur petits écrans */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+    }
+}
+
 
 /* Result Section */
 .result-header {
@@ -1144,21 +996,19 @@ section:not(.controls):hover {
     justify-content: flex-end;
     gap: 0.8rem;
     margin-top: 1rem;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.history-item .history-actions {
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .history-item:hover .history-actions {
     opacity: 1;
     transform: translateY(0);
-}
-
-.history-actions {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 1.2rem;
-    justify-content: flex-end;
 }
 
 .history-actions button {
