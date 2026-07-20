@@ -1,0 +1,52 @@
+# --- 1. Forcer HTTPS (Redirection 301) ---
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# --- 2. En-tetes de securite HTTP ---
+<IfModule mod_headers.c>
+    # HSTS - Force HTTPS pendant 1 an
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # CSP - adaptee aux ressources reellement chargees par le site
+    # (fonts Google, aucun script/style inline, aucun objet embarque)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';"
+
+    # Anti-clickjacking
+    Header always set X-Frame-Options "DENY"
+
+    # Anti-MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Politique de referrer
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Restrictions des API navigateur
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+</IfModule>
+
+# --- 3. Masquer la signature du serveur ---
+ServerSignature Off
+
+# --- 4. Desactiver le listing de repertoires ---
+Options -Indexes
+
+# --- 5. Restreindre les methodes HTTP ---
+<IfModule mod_authz_core.c>
+    <LimitExcept GET HEAD>
+        Require all denied
+    </LimitExcept>
+</IfModule>
+
+# --- 6. Compression GZIP ---
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript
+</IfModule>
+
+# --- 7. Cache navigateur ---
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+</IfModule>
